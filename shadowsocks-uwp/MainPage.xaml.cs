@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.Vpn;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +26,42 @@ namespace shadowsocks_uwp
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            VpnManagementAgent vma = new VpnManagementAgent();
+            VpnPlugInProfile profile = new VpnPlugInProfile();
+            
+        }
+
+        class VPN : IVpnPlugIn
+        {
+            public void Connect(VpnChannel channel)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Disconnect(VpnChannel channel)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void GetKeepAlivePayload(VpnChannel channel, out VpnPacketBuffer keepAlivePacket)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Encapsulate(VpnChannel channel, VpnPacketBufferList packets, VpnPacketBufferList encapulatedPackets)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Decapsulate(VpnChannel channel, VpnPacketBuffer encapBuffer, VpnPacketBufferList decapsulatedPackets,
+                VpnPacketBufferList controlPacketsToSend)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

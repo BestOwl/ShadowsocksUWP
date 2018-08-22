@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ShadowsocksBG;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.Vpn;
@@ -23,45 +26,46 @@ namespace shadowsocks_uwp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public const string _ShadowsocksBG_Name = "ShadowsocksBG";
+        public const string _ShadowsocksBG_TaskEntryPoint = "ShadowsocksBG.VpnTask";
+
+        public BackgroundTaskRegistration ShadowsocksBG;
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            ShadowsocksBG = CheckBackgroundTask();
+            if (ShadowsocksBG == null)
+            {
+                var builder = new BackgroundTaskBuilder();
+
+                builder.Name = _ShadowsocksBG_Name;
+                builder.TaskEntryPoint = _ShadowsocksBG_TaskEntryPoint;
+                builder.SetTrigger(new ApplicationTrigger());
+
+                ShadowsocksBG = builder.Register();
+            }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Check if BackgroundTask is registered
+        /// </summary>
+        private BackgroundTaskRegistration CheckBackgroundTask()
         {
-            VpnManagementAgent vma = new VpnManagementAgent();
-            VpnPlugInProfile profile = new VpnPlugInProfile();
-            
+            foreach (var task in BackgroundTaskRegistration.AllTasks)
+            {
+                if (task.Value.Name == _ShadowsocksBG_Name && task.Value is BackgroundTaskRegistration)
+                {
+                    return task.Value as BackgroundTaskRegistration;
+                }
+            }
+            return null;
         }
 
-        class VPN : IVpnPlugIn
+        private async void button_Click(object sender, RoutedEventArgs e)
         {
-            public void Connect(VpnChannel channel)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Disconnect(VpnChannel channel)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void GetKeepAlivePayload(VpnChannel channel, out VpnPacketBuffer keepAlivePacket)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Encapsulate(VpnChannel channel, VpnPacketBufferList packets, VpnPacketBufferList encapulatedPackets)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Decapsulate(VpnChannel channel, VpnPacketBuffer encapBuffer, VpnPacketBufferList decapsulatedPackets,
-                VpnPacketBufferList controlPacketsToSend)
-            {
-                throw new NotImplementedException();
-            }
         }
+
     }
 }

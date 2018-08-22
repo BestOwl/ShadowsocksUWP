@@ -21,12 +21,12 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" Executable="shadowsocks-uwp.exe" EntryPoint="ShadowsocksBG.ShadowsocksTask">
+        <!-- add extension for url sceme -->
+        <Extension Category="windows.backgroundTasks" Executable="shadowsocks-uwp.exe" EntryPoint="ShadowsocksBG.VpnTask">
           <BackgroundTasks>
             <uap:Task Type="vpnClient" />
           </BackgroundTasks>
         </Extension>
-        <!-- add extension for url sceme -->
       </Extensions>
     </Application>
   </Applications>

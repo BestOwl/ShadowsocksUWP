@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shadowsocks-uwp", "shadowsocks-uwp\shadowsocks-uwp.csproj", "{6E72558D-2E69-4BE4-80C4-A60A7A67F0C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadowsocksBG", "ShadowsocksBG\ShadowsocksBG.csproj", "{17FA7349-B253-476B-96FA-45C44468090B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wintun2socks", "Wintun2socks\wintun2socks.vcxproj", "{D782A42F-F6FE-41C8-801B-4876E9E493F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,8 +57,25 @@ Global
 		{17FA7349-B253-476B-96FA-45C44468090B}.Release|x64.Build.0 = Release|x64
 		{17FA7349-B253-476B-96FA-45C44468090B}.Release|x86.ActiveCfg = Release|x86
 		{17FA7349-B253-476B-96FA-45C44468090B}.Release|x86.Build.0 = Release|x86
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Debug|ARM.ActiveCfg = Debug|ARM
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Debug|ARM.Build.0 = Debug|ARM
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Debug|x64.ActiveCfg = Debug|x64
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Debug|x64.Build.0 = Debug|x64
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Debug|x86.ActiveCfg = Debug|Win32
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Debug|x86.Build.0 = Debug|Win32
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Release|ARM.ActiveCfg = Release|ARM
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Release|ARM.Build.0 = Release|ARM
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Release|x64.ActiveCfg = Release|x64
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Release|x64.Build.0 = Release|x64
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Release|x86.ActiveCfg = Release|Win32
+		{D782A42F-F6FE-41C8-801B-4876E9E493F8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7607CCE0-F608-4B86-A41D-10FE15390E1F}
 	EndGlobalSection
 EndGlobal

@@ -7,9 +7,9 @@
     <ProjectGuid>{6E72558D-2E69-4BE4-80C4-A60A7A67F0C2}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>shadowsocks_uwp</RootNamespace>
-    <AssemblyName>shadowsocks-uwp</AssemblyName>
-    <DefaultLanguage>zh-CN</DefaultLanguage>
+    <RootNamespace>ShadowsocksUWP</RootNamespace>
+    <AssemblyName>ShadowsocksUWP</AssemblyName>
+    <DefaultLanguage>zh-hans</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>

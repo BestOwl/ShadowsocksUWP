@@ -1,0 +1,3 @@
+[submodule "badvpn-winrt"]
+	path = badvpn-winrt
+	url = https://github.com/BestOwl/badvpn-winrt.git

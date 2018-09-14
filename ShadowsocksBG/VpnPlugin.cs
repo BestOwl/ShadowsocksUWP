@@ -10,8 +10,15 @@ namespace ShadowsocksBG
 {
     public sealed class VpnPlugin : IVpnPlugIn
     {
+        internal const uint VPN_MTU = 1500;
+        internal const string VPN_ADDR = "172.19.0.1";
+        internal const string VPN_NETMASK = "255.255.255.255";
+        internal const string TUN_SERVICE_NAME = "60000";
+        internal readonly HostName VPN_HOST = new HostName(VPN_ADDR);
+
         BackgroundTaskDeferral def = null;
         VpnPluginState State = VpnPluginState.Disconnected;
+
         private void LogLine(string text, VpnChannel channel)
         {
             //Debug.WriteLine(text);
@@ -26,31 +33,20 @@ namespace ShadowsocksBG
                 var transport = new DatagramSocket();
                 channel.AssociateTransport(transport, null);
 
-                VpnContext context = null;
+                VpnContextNew context = null;
                 if (channel.PlugInContext == null)
                 {
                     LogLine("Initializing new context", channel);
-                    channel.PlugInContext = context = new VpnContext();
+                    channel.PlugInContext = context = new VpnContextNew();
+                    context.InitTun2Socks(TUN_SERVICE_NAME, VPN_ADDR, VPN_NETMASK, (int) VPN_MTU, "192.168.1.106:60000", "");
                 }
                 else
                 {
                     LogLine("Context exists", channel);
-                    context = (VpnContext)channel.PlugInContext;
+                    context = (VpnContextNew)channel.PlugInContext;
                 }
-                transport.BindEndpointAsync(new HostName("127.0.0.1"), "9007").AsTask().ContinueWith(t =>
-                {
-                    LogLine("Binded", channel);
-                }).Wait();
-#if !DEBUG
-                context.Init("9008");
-#endif
-                /* var rport = context.Init(transport.Information.LocalPort, str =>
-                {
-                    LogLine(str, channel);
-                    return null;
-                }); */
-                var rport = "9008";
-                transport.ConnectAsync(new HostName("127.0.0.1"), rport).AsTask().ContinueWith(t =>
+
+                transport.ConnectAsync(new HostName("127.0.0.1"), TUN_SERVICE_NAME).AsTask().ContinueWith(t =>
                 {
                     LogLine("r Connected", channel);
                 });
@@ -61,33 +57,30 @@ namespace ShadowsocksBG
                 };
 
                 var inclusionRoutes = routeScope.Ipv4InclusionRoutes;
-                // myip.ipip.net
-                //inclusionRoutes.Add(new VpnRoute(new HostName("36.99.18.134"), 32));
                 // qzworld.net
-                //inclusionRoutes.Add(new VpnRoute(new HostName("188.166.248.242"), 32));
+                inclusionRoutes.Add(new VpnRoute(new HostName("188.166.248.242"), 32));
                 // DNS server
-                inclusionRoutes.Add(new VpnRoute(new HostName("1.1.1.1"), 32));
+                //inclusionRoutes.Add(new VpnRoute(new HostName("1.1.1.1"), 32));
                 // main CIDR
-                inclusionRoutes.Add(new VpnRoute(new HostName("172.17.0.0"), 16));
+                //inclusionRoutes.Add(new VpnRoute(new HostName("172.17.0.0"), 16));
 
-                var assignment = new VpnDomainNameAssignment();
-                var dnsServers = new[]
-                {
-                    // DNS servers
-                    // new HostName("192.168.1.1"),
-                    new HostName("1.1.1.1")
-                };
-                assignment.DomainNameList.Add(new VpnDomainNameInfo(".", VpnDomainNameType.Suffix, dnsServers, new HostName[] { }));
+                //var assignment = new VpnDomainNameAssignment();
+                //var dnsServers = new[]
+                //{
+                //    // DNS servers
+                //    new HostName("1.1.1.1")
+                //};
+                //assignment.DomainNameList.Add(new VpnDomainNameInfo(".", VpnDomainNameType.Suffix, dnsServers, new HostName[] { }));
 
                 var now = DateTime.Now;
                 LogLine("Starting transport", channel);
                 channel.StartWithMainTransport(
-                new[] { new HostName("192.168.3.1") },
+                new[] { VPN_HOST },
                 null,
                 null,
                 routeScope,
-                assignment,
-                1500u,
+                null,
+                VPN_MTU,
                 1512u,
                 false,
                 transport
@@ -120,7 +113,7 @@ namespace ShadowsocksBG
             {
                 LogLine("Disconnecting with non-null context", channel);
             }
-            var context = (VpnContext)channel.PlugInContext;
+            var context = (VpnContextNew)channel.PlugInContext;
             channel.Stop();
             LogLine("channel stopped", channel);
             channel.PlugInContext = null;

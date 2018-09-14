@@ -108,6 +108,7 @@
     <Compile Include="DNS\DnsProxyServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShadowsocksTask.cs" />
+    <Compile Include="VpnContextNew.cs" />
     <Compile Include="VpnPlugin.cs" />
     <Compile Include="VpnPluginState.cs" />
     <Compile Include="VpnTask.cs" />
@@ -121,6 +122,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CMakeBuilds\build\x86-Debug\tun2socks-winrt\Tun2SocksWinRT.vcxproj">
+      <Project>{7478eb49-e4d5-35fc-af15-316da62196ca}</Project>
+      <Name>Tun2SocksWinRT</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

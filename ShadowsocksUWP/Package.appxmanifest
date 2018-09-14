@@ -22,7 +22,7 @@
       </uap:VisualElements>
       <Extensions>
         <!-- add extension for url sceme -->
-        <Extension Category="windows.backgroundTasks" Executable="shadowsocks-uwp.exe" EntryPoint="ShadowsocksBG.VpnTask">
+        <Extension Category="windows.backgroundTasks" Executable="ShadowsocksUWP.exe" EntryPoint="ShadowsocksBG.VpnTask">
           <BackgroundTasks>
             <uap:Task Type="vpnClient" />
           </BackgroundTasks>

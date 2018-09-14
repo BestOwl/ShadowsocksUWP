@@ -128,10 +128,6 @@
       <Project>{17fa7349-b253-476b-96fa-45c44468090b}</Project>
       <Name>ShadowsocksBG</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wintun2socks\wintun2socks.vcxproj">
-      <Project>{d782a42f-f6fe-41c8-801b-4876e9e493f8}</Project>
-      <Name>wintun2socks</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">

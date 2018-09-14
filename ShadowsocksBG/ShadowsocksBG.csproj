@@ -105,15 +105,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Adapter\IAdapterSocket.cs" />
-    <Compile Include="Adapter\ProxyAdapter.cs" />
-    <Compile Include="Adapter\RawShadowsocksAdapter.cs" />
-    <Compile Include="Adapter\TunSocketAdapter.cs" />
     <Compile Include="DNS\DnsProxyServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShadowsocksTask.cs" />
-    <Compile Include="TunInterface.cs" />
-    <Compile Include="VpnContext.cs" />
     <Compile Include="VpnPlugin.cs" />
     <Compile Include="VpnPluginState.cs" />
     <Compile Include="VpnTask.cs" />
@@ -127,9 +121,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wintun2socks\wintun2socks.vcxproj">
-      <Project>{d782a42f-f6fe-41c8-801b-4876e9e493f8}</Project>
-      <Name>wintun2socks</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

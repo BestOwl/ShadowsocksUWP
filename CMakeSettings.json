@@ -1,0 +1,64 @@
+{
+  // 请参阅 https://go.microsoft.com//fwlink//?linkid=834763 了解有关此文件的详细信息。
+  "configurations": [
+    {
+      "name": "x86-Debug",
+      "generator": "Visual Studio 15 2017",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x86" ],
+      "buildRoot": "${workspaceRoot}\\CMakeBuilds\\build\\${name}",
+      "installRoot": "${workspaceRoot}\\CMakeBuilds\\install\\${name}",
+      "variables": [
+        {
+          "name": "CMAKE_SYSTEM_NAME",
+          "value": "WindowsStore"
+        },
+        {
+          "name": "CMAKE_SYSTEM_VERSION",
+          "value": "10.0.15063" // the "latest" version for Mobile
+        },
+        {
+          "name": "BUILD_NOTHING_BY_DEFAULT",
+          "value": "1"
+        },
+        {
+          "name": "BUILD_TUN2SOCKSWINRT",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "name": "x86-Release",
+      "generator": "Visual Studio 15 2017",
+      "configurationType": "RelWithDebInfo",
+      "inheritEnvironments": [ "msvc_x86" ],
+      "buildRoot": "${workspaceRoot}\\CMakeBuilds\\build\\${name}",
+      "installRoot": "${workspaceRoot}\\CMakeBuilds\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v:",
+      "ctestCommandArgs": ""
+    },
+    {
+      "name": "x64-Debug",
+      "generator": "Visual Studio 15 2017",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${workspaceRoot}\\CMakeBuilds\\build\\${name}",
+      "installRoot": "${workspaceRoot}\\CMakeBuilds\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": ""
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Visual Studio 15 2017",
+      "configurationType": "RelWithDebInfo",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${workspaceRoot}\\CMakeBuilds\\build\\${name}",
+      "installRoot": "${workspaceRoot}\\CMakeBuilds\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": ""
+    }
+  ]
+}

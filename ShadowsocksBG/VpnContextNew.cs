@@ -12,12 +12,12 @@ namespace ShadowsocksBG
         public Task TunTask;
         public Tun2Socks Tun;
 
-        public void InitTun2Socks(string tunServiceName, string vlanAddr, string vlanNetmask, int mtu, string socksServerAddr, string socksServerPasswd)
+        public void InitTun2Socks(string tunServiceName, string vlanAddr, string vlanNetmask, int mtu, string socksServerAddr, string cryptoMethod, string socksServerPasswd)
         {
             Tun = new Tun2Socks();
             TunTask = Task.Run(() =>
             {
-                Tun.Init(tunServiceName, vlanAddr, vlanNetmask, mtu, socksServerAddr, socksServerPasswd);
+                Tun.Init(tunServiceName, vlanAddr, vlanNetmask, mtu, socksServerAddr, cryptoMethod, socksServerPasswd);
             });
         }
     }

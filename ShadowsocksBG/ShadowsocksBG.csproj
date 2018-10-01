@@ -122,8 +122,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CMakeBuilds\build\x86-Debug\badvpn-winrt\tun2socks-winrt\Tun2SocksWinRT.vcxproj">
-      <Project>{53573a89-5985-3af1-9fb8-73a8a17094ce}</Project>
+    <ProjectReference Include="..\Tun2SocksWinRT\Tun2SocksWinRT\Tun2SocksWinRT.vcxproj">
+      <Project>{5800da9e-4eb4-425c-a563-098029964d33}</Project>
       <Name>Tun2SocksWinRT</Name>
     </ProjectReference>
   </ItemGroup>

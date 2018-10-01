@@ -38,7 +38,7 @@ namespace ShadowsocksBG
                 {
                     LogLine("Initializing new context", channel);
                     channel.PlugInContext = context = new VpnContextNew();
-                    context.InitTun2Socks(TUN_SERVICE_NAME, VPN_ADDR, VPN_NETMASK, (int) VPN_MTU, "192.168.1.106:60000", "");
+                    context.InitTun2Socks(TUN_SERVICE_NAME, VPN_ADDR, VPN_NETMASK, (int) VPN_MTU, "172.247.34.205:35591", "aes-256-cfb", "SSTest");
                 }
                 else
                 {

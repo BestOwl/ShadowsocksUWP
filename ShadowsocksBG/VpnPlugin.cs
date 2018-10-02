@@ -11,6 +11,7 @@ namespace ShadowsocksBG
     public sealed class VpnPlugin : IVpnPlugIn
     {
         internal const uint VPN_MTU = 1500;
+        internal const uint VPN_MAX_FRAME = 1512;
         internal const string VPN_ADDR = "172.19.0.1";
         internal const string VPN_NETMASK = "255.255.255.255";
         internal const string TUN_SERVICE_NAME = "60000";
@@ -24,6 +25,7 @@ namespace ShadowsocksBG
             //Debug.WriteLine(text);
             channel.LogDiagnosticMessage(text);
         }
+
         public void Connect(VpnChannel channel)
         {
             State = VpnPluginState.Connecting;
@@ -33,58 +35,57 @@ namespace ShadowsocksBG
                 var transport = new DatagramSocket();
                 channel.AssociateTransport(transport, null);
 
-                VpnContextNew context = null;
+                VpnContext context = null;
                 if (channel.PlugInContext == null)
                 {
                     LogLine("Initializing new context", channel);
-                    channel.PlugInContext = context = new VpnContextNew();
-                    context.InitTun2Socks(TUN_SERVICE_NAME, VPN_ADDR, VPN_NETMASK, (int) VPN_MTU, "172.247.34.205:35591", "aes-256-cfb", "SSTest");
+                    channel.PlugInContext = context = new VpnContext();
                 }
                 else
                 {
                     LogLine("Context exists", channel);
-                    context = (VpnContextNew)channel.PlugInContext;
+                    context = (VpnContext)channel.PlugInContext;
                 }
-
-                transport.ConnectAsync(new HostName("127.0.0.1"), TUN_SERVICE_NAME).AsTask().ContinueWith(t =>
-                {
-                    LogLine("r Connected", channel);
-                });
-
-                VpnRouteAssignment routeScope = new VpnRouteAssignment()
-                {
-                    ExcludeLocalSubnets = true
-                };
-
-                var inclusionRoutes = routeScope.Ipv4InclusionRoutes;
-                // qzworld.net
-                inclusionRoutes.Add(new VpnRoute(new HostName("188.166.248.242"), 32));
-                // DNS server
-                //inclusionRoutes.Add(new VpnRoute(new HostName("1.1.1.1"), 32));
-                // main CIDR
-                //inclusionRoutes.Add(new VpnRoute(new HostName("172.17.0.0"), 16));
-
-                //var assignment = new VpnDomainNameAssignment();
-                //var dnsServers = new[]
-                //{
-                //    // DNS servers
-                //    new HostName("1.1.1.1")
-                //};
-                //assignment.DomainNameList.Add(new VpnDomainNameInfo(".", VpnDomainNameType.Suffix, dnsServers, new HostName[] { }));
 
                 var now = DateTime.Now;
                 LogLine("Starting transport", channel);
-                channel.StartWithMainTransport(
-                new[] { VPN_HOST },
-                null,
-                null,
-                routeScope,
-                null,
-                VPN_MTU,
-                1512u,
-                false,
-                transport
-                );
+
+                if (!context.isInited)
+                {
+                    context.Init();
+                    //context.InitTun2Socks(TUN_SERVICE_NAME, VPN_ADDR, VPN_NETMASK, (int) VPN_MTU, "172.247.34.205:35591", "aes-256-cfb", "SSTest");
+
+                    transport.ConnectAsync(new HostName("127.0.0.1"), TUN_SERVICE_NAME).AsTask().ContinueWith(t =>
+                    {
+                        LogLine("r Connected", channel);
+                    });
+
+                    channel.StartWithMainTransport(
+                        new[] { VPN_HOST },
+                        null,
+                        null,
+                        context.routeScope,
+                        null,
+                        VPN_MTU,
+                        VPN_MAX_FRAME,
+                        true,
+                        transport
+                    );
+                }
+                else
+                {
+                    channel.StartExistingTransports(
+                        new[] { VPN_HOST },
+                        null,
+                        null,
+                        context.routeScope,
+                        null,
+                        VPN_MTU,
+                        VPN_MAX_FRAME,
+                        true
+                    );
+                }
+
                 var delta = DateTime.Now - now;
                 LogLine($"Finished starting transport in {delta.TotalMilliseconds} ms.", channel);
                 LogLine("Connected", channel);
@@ -113,7 +114,7 @@ namespace ShadowsocksBG
             {
                 LogLine("Disconnecting with non-null context", channel);
             }
-            var context = (VpnContextNew)channel.PlugInContext;
+            var context = (VpnContext)channel.PlugInContext;
             channel.Stop();
             LogLine("channel stopped", channel);
             channel.PlugInContext = null;

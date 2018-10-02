@@ -108,7 +108,7 @@
     <Compile Include="DNS\DnsProxyServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShadowsocksTask.cs" />
-    <Compile Include="VpnContextNew.cs" />
+    <Compile Include="VpnContext.cs" />
     <Compile Include="VpnPlugin.cs" />
     <Compile Include="VpnPluginState.cs" />
     <Compile Include="VpnTask.cs" />

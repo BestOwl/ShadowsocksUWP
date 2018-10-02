@@ -8,6 +8,7 @@ namespace ShadowsocksBG
     {
         private static IVpnPlugIn _pluginInstance = null;
         private static object _pluginLocker = new object();
+
         public static IVpnPlugIn GetPlugin()
         {
             if (_pluginInstance == null)
@@ -20,6 +21,7 @@ namespace ShadowsocksBG
             }
             return _pluginInstance;
         }
+
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             var plugin = GetPlugin() as VpnPlugin;

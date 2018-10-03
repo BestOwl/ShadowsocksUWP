@@ -25,6 +25,7 @@ namespace ShadowsocksBG
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             var plugin = GetPlugin() as VpnPlugin;
+            plugin.def = taskInstance.GetDeferral();
             VpnChannel.ProcessEventAsync(GetPlugin(), taskInstance.TriggerDetails);
         }
     }

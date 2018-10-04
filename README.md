@@ -2,7 +2,20 @@
 [![telegram_group](https://img.shields.io/badge/chat%20on-telegram%20group-blue.svg)](https://telegram.me/ytflow)
 >If you want to keep a secret, you must also hide it from yourself.
 
-NOTE: This project is working in progress, not truly support shadowsocks yet.
+### Features
+NOTE: This project is working in progress, some features are no implemented yet.
+
+- [x] TCP relay
+- [ ] UDP relay
+- [ ] Stream cipher
+  - [x] aes-xxx-cfb
+  - [x] aes-xxx-ctr
+  - [ ] chacha20-ietf
+  - [ ] camellia-xxx-cfb
+- [ ] AEAD cipher
+- [ ] Profile switching
+- [ ] QR code profile sharing
+- [ ] PAC configuration
  
 ### Geting started
 ###### Requirements

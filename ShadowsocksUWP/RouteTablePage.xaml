@@ -1,0 +1,62 @@
+﻿<Page
+    x:Class="ShadowsocksUWP.RouteTablePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ShadowsocksUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vpn="using:Windows.Networking.Vpn"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Page.Resources>
+        <DataTemplate x:Key="routeItem" x:DataType="vpn:VpnRoute">
+            <Grid Width="400">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Bind Address}" />
+                <TextBlock Text="{x:Bind PrefixSize}" Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Ipv4InclusionRoutes" />
+        <ListView ItemTemplate="{StaticResource routeItem}" 
+                  x:Name="inList"
+                  ItemsSource="{x:Bind Ipv4InclusionRoutes}" 
+                  Margin="0,50,0,0"
+                  SelectionMode="Multiple">
+        </ListView>
+
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Ipv4ExclusionRoutes" Grid.Column="1" />
+        <ListView Grid.Column="1" ItemTemplate="{StaticResource routeItem}" 
+                  x:Name="exList"
+                  ItemsSource="{x:Bind Ipv4ExclusionRoutes}" 
+                  Margin="0,50,0,0"
+                  SelectionMode="Multiple">
+        </ListView>
+
+        <ContentDialog Grid.ColumnSpan="2" Title="Add route item" x:Name="dialog"
+                       PrimaryButtonText="Ipv4InclusionRoutes" SecondaryButtonText="Ipv4ExclusionRoutes"
+                       PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+                       SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+            <StackPanel>
+                <TextBox Header="Address" x:Name="in_host"/>
+                <TextBox Header="Subnet prefix size" x:Name="in_prefixsize"/>
+            </StackPanel>
+        </ContentDialog>
+
+        <CommandBar Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+            <AppBarButton Icon="Add" Click="AppBarButton_Click"/>
+            <AppBarButton Icon="Delete" Click="Button_Click" />
+        </CommandBar>
+    </Grid>
+</Page>

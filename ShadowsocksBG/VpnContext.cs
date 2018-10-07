@@ -27,7 +27,7 @@ namespace ShadowsocksBG
         {
             var inclusionRoutes = routeScope.Ipv4InclusionRoutes;
             // qzworld.net
-            inclusionRoutes.Add(new VpnRoute(new HostName("188.166.248.242"), 32));
+            //inclusionRoutes.Add(new VpnRoute(new HostName("188.166.248.242"), 32));
             // DNS server
             //inclusionRoutes.Add(new VpnRoute(new HostName("1.1.1.1"), 32));
             // main CIDR
@@ -42,6 +42,38 @@ namespace ShadowsocksBG
             //assignment.DomainNameList.Add(new VpnDomainNameInfo(".", VpnDomainNameType.Suffix, dnsServers, new HostName[] { }));
 
             isInited = true;
+        }
+
+        private void CreateRouteList(IList<VpnRoute> list, HostName dst)
+        {
+            int[] dstIP = new int[4];
+            string[] dstHost = dst.RawName.Split('.');
+            if (dstHost.Length != 4)
+            {
+                return;
+            }
+            for(int i = 0; i < 4; i++)
+            {
+                int.TryParse(dstHost[i], out dstIP[i]);
+            }
+
+            for (int i = 0; i < 240; i++) // exclude 240.0.0.0/4
+            {
+                if (i == 10)
+                {
+                    continue;
+                }
+                else if (i == 127)
+                {
+                    continue;
+                }
+                else if (i == dstIP[1])
+                {
+                    continue;
+                }
+
+                list.Add(new VpnRoute(new HostName(string.Format("{0}.0.0.0", i)), 8));
+            }
         }
 
         public void InitTun2Socks(string tunServiceName, string vlanAddr, string vlanNetmask, int mtu, string socksServerAddr, string cryptoMethod, string socksServerPasswd)

@@ -12,7 +12,7 @@ namespace ShadowsocksBG
     {
         internal const uint VPN_MTU = 1500;
         internal const uint VPN_MAX_FRAME = 1512;
-        internal const string VPN_ADDR = "172.19.0.1";
+        internal const string VPN_ADDR = "10.19.10.1";
         internal const string VPN_NETMASK = "255.255.255.255";
         internal const string TUN_SERVICE_NAME = "60000";
         internal readonly HostName VPN_HOST = new HostName(VPN_ADDR);

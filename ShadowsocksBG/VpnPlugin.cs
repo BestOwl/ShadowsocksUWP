@@ -17,9 +17,7 @@ namespace ShadowsocksBG
         internal const string TUN_SERVICE_NAME = "60000";
         internal readonly HostName VPN_HOST = new HostName(VPN_ADDR);
 
-        internal BackgroundTaskDeferral def = null;
         VpnPluginState State = VpnPluginState.Disconnected;
-        DatagramSocket transport;
 
         private void LogLine(string text, VpnChannel channel)
         {
@@ -33,19 +31,17 @@ namespace ShadowsocksBG
             LogLine("Connecting", channel);
             try
             {
+                DatagramSocket transport = new DatagramSocket();
+                channel.AssociateTransport(transport, null);
+
                 VpnContext context = null;
                 if (channel.PlugInContext == null)
                 {
                     // create and Initialize context
                     LogLine("Initializing new context", channel);
                     channel.PlugInContext = context = new VpnContext();
-                    //context.InitTun2Socks(TUN_SERVICE_NAME, VPN_ADDR, VPN_NETMASK, (int) VPN_MTU, "172.247.34.205:35591", "aes-256-cfb", "SSTest");
+                    context.InitTun2Socks(TUN_SERVICE_NAME, VPN_ADDR, VPN_NETMASK, (int)VPN_MTU, "192.168.1.107:60000", "aes-256-cfb", "SSTest");
                     context.Init();
-                    transport = new DatagramSocket();
-                    transport.ConnectAsync(new HostName("127.0.0.1"), TUN_SERVICE_NAME).AsTask().ContinueWith(t =>
-                    {
-                        LogLine("r Connected", channel);
-                    });
                 }
                 else
                 {
@@ -53,21 +49,26 @@ namespace ShadowsocksBG
                     context = (VpnContext)channel.PlugInContext;
                 }
 
-                channel.AssociateTransport(transport, null);
+                transport.ConnectAsync(new HostName("127.0.0.1"), TUN_SERVICE_NAME).AsTask().ContinueWith(t =>
+                {
+                    LogLine("r Connected", channel);
+                });
 
                 var now = DateTime.Now;
                 LogLine("Starting transport", channel);
 
-                channel.StartWithMainTransport(
+                channel.StartWithTrafficFilter(
                     new[] { VPN_HOST },
                     null,
                     null,
                     context.routeScope,
-                    null,
+                    context.domainAssignment,
                     VPN_MTU,
                     VPN_MAX_FRAME,
-                    true,
-                    transport
+                    false,
+                    transport,
+                    null,
+                    context.trafficScope
                 );
 
                 var delta = DateTime.Now - now;
@@ -83,7 +84,6 @@ namespace ShadowsocksBG
                 channel.Stop();
                 State = VpnPluginState.Disconnected;
             }
-            def.Complete();
         }
 
         public void Disconnect(VpnChannel channel)
@@ -107,7 +107,6 @@ namespace ShadowsocksBG
 
             LogLine("Disconnected", channel);
             State = VpnPluginState.Disconnected;
-            def.Complete();
         }
 
         public void GetKeepAlivePayload(VpnChannel channel, out VpnPacketBuffer keepAlivePacket)

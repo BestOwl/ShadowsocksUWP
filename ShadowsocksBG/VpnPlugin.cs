@@ -52,23 +52,21 @@ namespace ShadowsocksBG
                 transport.ConnectAsync(new HostName("127.0.0.1"), TUN_SERVICE_NAME).AsTask().ContinueWith(t =>
                 {
                     LogLine("r Connected", channel);
-                });
+                }).Wait();
 
                 var now = DateTime.Now;
                 LogLine("Starting transport", channel);
 
-                channel.StartWithTrafficFilter(
+                channel.StartWithMainTransport(
                     new[] { VPN_HOST },
                     null,
                     null,
                     context.routeScope,
-                    context.domainAssignment,
+                    null,
                     VPN_MTU,
                     VPN_MAX_FRAME,
                     false,
-                    transport,
-                    null,
-                    context.trafficScope
+                    transport
                 );
 
                 var delta = DateTime.Now - now;
@@ -81,7 +79,6 @@ namespace ShadowsocksBG
                 LogLine("Error connecting", channel);
                 LogLine(ex.Message, channel);
                 LogLine(ex.StackTrace, channel);
-                channel.Stop();
                 State = VpnPluginState.Disconnected;
             }
         }
